@@ -1,0 +1,83 @@
+// Code generated with goa v3.4.2, DO NOT EDIT.
+//
+// Score protocol buffer definition
+//
+// Command:
+// $ goa gen sunflower/pkg/api/design -o pkg/api/
+
+syntax = "proto3";
+
+package score;
+
+option go_package = "/scorepb";
+
+// 成绩系统
+service Score {
+	// 成绩列表
+	rpc ScoreList (ScoreListRequest) returns (ScoreListResponse);
+	// 成绩详情
+	rpc ScoreDetail (ScoreDetailRequest) returns (ScoreDetailResponse);
+}
+
+message ScoreListRequest {
+	// cursor of page
+	sint32 cursor = 1;
+	// limit of items
+	sint32 limit = 2;
+	// 排序字段 默认createdAt
+	string sort_field = 3;
+	// 排序方式 默认desc
+	string sort_order = 4;
+	// 姓名
+	string name = 5;
+	// 班级
+	string class = 6;
+	// 分数
+	sint32 scores = 7;
+	// 科目
+	string subject = 8;
+}
+
+message ScoreListResponse {
+	// 错误码
+	sint32 errcode = 1;
+	// 错误消息
+	string errmsg = 2;
+	// 结果
+	repeated GradeResult data = 3;
+	// 下一页游标
+	sint32 next_cursor = 4;
+	// 总记录数
+	sint32 total = 5;
+}
+// 分数信息
+message GradeResult {
+	// ID
+	string id = 1;
+	// 班级
+	string class = 2;
+	// 姓名
+	string name = 3;
+	// 得分
+	sint32 score = 4;
+	// 科目
+	string subject = 5;
+	// 创建时间
+	string created_at = 6;
+	// 更新时间
+	string updated_at = 7;
+}
+
+message ScoreDetailRequest {
+	// id
+	sint32 id = 1;
+}
+
+message ScoreDetailResponse {
+	// 错误码
+	sint32 errcode = 1;
+	// 错误消息
+	string errmsg = 2;
+	// 结果
+	GradeResult data = 3;
+}

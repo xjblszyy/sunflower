@@ -1,0 +1,501 @@
+openapi: 3.0.3
+info:
+  title: 微服务
+  version: "1.0"
+servers:
+- url: http://localhost:8000/sunflower
+  description: 微服务
+paths:
+  /api/score:
+    get:
+      tags:
+      - Score
+      summary: 成绩列表
+      description: 成绩列表
+      operationId: Score#ScoreList
+      parameters:
+      - name: sortField
+        in: query
+        description: 排序字段 默认createdAt
+        allowEmptyValue: true
+        schema:
+          type: string
+          description: 排序字段 默认createdAt
+          example: createdAt
+          enum:
+          - class
+          - name
+          - score
+          - subject
+          - createdAt
+        example: createdAt
+      - name: cursor
+        in: query
+        description: cursor of page
+        allowEmptyValue: true
+        required: true
+        schema:
+          type: integer
+          description: cursor of page
+          example: 0
+          format: int64
+        example: 0
+      - name: limit
+        in: query
+        description: limit of items
+        allowEmptyValue: true
+        required: true
+        schema:
+          type: integer
+          description: limit of items
+          example: 20
+          maximum: 100
+        example: 20
+      - name: sortOrder
+        in: query
+        description: 排序方式 默认desc
+        allowEmptyValue: true
+        schema:
+          type: string
+          description: 排序方式 默认desc
+          example: desc
+          enum:
+          - asc
+          - desc
+        example: desc
+      - name: name
+        in: query
+        description: 姓名
+        allowEmptyValue: true
+        schema:
+          type: string
+          description: 姓名
+          example: Necessitatibus eos.
+        example: Esse minus dolor.
+      - name: class
+        in: query
+        description: 班级
+        allowEmptyValue: true
+        schema:
+          type: string
+          description: 班级
+          example: Dicta dolore eos.
+        example: Dignissimos necessitatibus et sit.
+      - name: scores
+        in: query
+        description: 分数
+        allowEmptyValue: true
+        schema:
+          type: integer
+          description: 分数
+          example: 8636548712683229855
+          format: int64
+        example: 4389054178550142941
+      - name: subject
+        in: query
+        description: 科目
+        allowEmptyValue: true
+        schema:
+          type: string
+          description: 科目
+          example: Laudantium occaecati cumque.
+        example: Labore quia quia non sunt error odit.
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreListResponseBody'
+              example:
+                data:
+                - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+                  createdAt: Suscipit labore est laborum a.
+                  id: Magni eos repudiandae incidunt molestiae.
+                  name: Est sit amet architecto rerum.
+                  score: 3831988211228176154
+                  subject: Quis qui alias.
+                  updatedAt: Aliquid id itaque quo dolores sit.
+                - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+                  createdAt: Suscipit labore est laborum a.
+                  id: Magni eos repudiandae incidunt molestiae.
+                  name: Est sit amet architecto rerum.
+                  score: 3831988211228176154
+                  subject: Quis qui alias.
+                  updatedAt: Aliquid id itaque quo dolores sit.
+                errcode: 0
+                errmsg: ""
+                nextCursor: 2993372777047587251
+                total: 1927727183812121269
+        "400":
+          description: Bad Request response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+        "500":
+          description: Internal Server Error response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+  /api/score/{id}:
+    get:
+      tags:
+      - Score
+      summary: 成绩详情
+      description: 成绩详情
+      operationId: Score#ScoreDetail
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: integer
+          description: id
+          example: 1
+          format: int64
+        example: 1
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreDetailResponseBody'
+              example:
+                data:
+                  class: Est quos tempore temporibus consequuntur aliquid quaerat.
+                  createdAt: Suscipit labore est laborum a.
+                  id: Magni eos repudiandae incidunt molestiae.
+                  name: Est sit amet architecto rerum.
+                  score: 3831988211228176154
+                  subject: Quis qui alias.
+                  updatedAt: Aliquid id itaque quo dolores sit.
+                errcode: 0
+                errmsg: ""
+        "400":
+          description: Bad Request response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+        "500":
+          description: Internal Server Error response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+  /api/score/upload:
+    post:
+      tags:
+      - Score
+      summary: 上传学生成绩文件
+      description: 上传学生成绩文件
+      operationId: Score#Upload
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Content-Type header, must define value for multipart boundary.
+        allowEmptyValue: true
+        schema:
+          type: string
+          description: Content-Type header, must define value for multipart boundary.
+          default: multipart/form-data; boundary=goa
+          example: multipart/form-data; boundary=goa
+          pattern: multipart/[^;]+; boundary=.+
+        example: multipart/form-data; boundary=goa
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponseBody'
+              example:
+                data:
+                  ok: true
+                errcode: 0
+                errmsg: ""
+        "400":
+          description: Bad Request response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+        "500":
+          description: Internal Server Error response.
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        fault:
+          type: boolean
+          description: Is the error a server-side fault?
+          example: true
+        id:
+          type: string
+          description: ID is a unique identifier for this particular occurrence of
+            the problem.
+          example: 123abc
+        message:
+          type: string
+          description: Message is a human-readable explanation specific to this occurrence
+            of the problem.
+          example: parameter 'p' must be an integer
+        name:
+          type: string
+          description: Name is the name of this class of errors.
+          example: bad_request
+        temporary:
+          type: boolean
+          description: Is the error temporary?
+          example: false
+        timeout:
+          type: boolean
+          description: Is the error a timeout?
+          example: true
+      example:
+        id: 3F1FKVRR
+        message: Value of ID must be an integer
+        name: bad_request
+      required:
+      - name
+      - id
+      - message
+      - temporary
+      - timeout
+      - fault
+    Graderesult:
+      type: object
+      properties:
+        class:
+          type: string
+          description: 班级
+          example: Perferendis voluptatibus eos.
+        createdAt:
+          type: string
+          description: 创建时间
+          example: Est accusamus.
+        id:
+          type: string
+          description: ID
+          example: Explicabo temporibus laboriosam quia sapiente.
+        name:
+          type: string
+          description: 姓名
+          example: Similique sequi autem.
+        score:
+          type: integer
+          description: 得分
+          example: 8901558009035411556
+          format: int64
+        subject:
+          type: string
+          description: 科目
+          example: Iste aliquid ullam eveniet adipisci pariatur.
+        updatedAt:
+          type: string
+          description: 更新时间
+          example: Ea sint earum hic aut molestiae.
+      description: 分数信息
+      example:
+        class: Non necessitatibus a exercitationem rerum vitae sit.
+        createdAt: Totam eum.
+        id: Dolorem quia sit cupiditate magni consequatur adipisci.
+        name: Nemo fugiat ex sint ipsa.
+        score: 6686998468005743339
+        subject: Fugit sit ad esse quisquam.
+        updatedAt: Sit tenetur a unde.
+      required:
+      - id
+      - class
+      - name
+      - score
+      - subject
+      - createdAt
+      - updatedAt
+    ScoreDetailResponseBody:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Graderesult'
+        errcode:
+          type: integer
+          description: 错误码
+          example: 0
+          minimum: 0
+          maximum: 999999
+        errmsg:
+          type: string
+          description: 错误消息
+          example: ""
+      example:
+        data:
+          class: Est quos tempore temporibus consequuntur aliquid quaerat.
+          createdAt: Suscipit labore est laborum a.
+          id: Magni eos repudiandae incidunt molestiae.
+          name: Est sit amet architecto rerum.
+          score: 3831988211228176154
+          subject: Quis qui alias.
+          updatedAt: Aliquid id itaque quo dolores sit.
+        errcode: 0
+        errmsg: ""
+      required:
+      - errcode
+      - errmsg
+    ScoreListResponseBody:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Graderesult'
+          description: 结果
+          example:
+          - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+            createdAt: Suscipit labore est laborum a.
+            id: Magni eos repudiandae incidunt molestiae.
+            name: Est sit amet architecto rerum.
+            score: 3831988211228176154
+            subject: Quis qui alias.
+            updatedAt: Aliquid id itaque quo dolores sit.
+          - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+            createdAt: Suscipit labore est laborum a.
+            id: Magni eos repudiandae incidunt molestiae.
+            name: Est sit amet architecto rerum.
+            score: 3831988211228176154
+            subject: Quis qui alias.
+            updatedAt: Aliquid id itaque quo dolores sit.
+          - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+            createdAt: Suscipit labore est laborum a.
+            id: Magni eos repudiandae incidunt molestiae.
+            name: Est sit amet architecto rerum.
+            score: 3831988211228176154
+            subject: Quis qui alias.
+            updatedAt: Aliquid id itaque quo dolores sit.
+        errcode:
+          type: integer
+          description: 错误码
+          example: 0
+          minimum: 0
+          maximum: 999999
+        errmsg:
+          type: string
+          description: 错误消息
+          example: ""
+        nextCursor:
+          type: integer
+          description: 下一页游标
+          example: 4125820688673644077
+          format: int64
+        total:
+          type: integer
+          description: 总记录数
+          example: 2873762643361007283
+          format: int64
+      example:
+        data:
+        - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+          createdAt: Suscipit labore est laborum a.
+          id: Magni eos repudiandae incidunt molestiae.
+          name: Est sit amet architecto rerum.
+          score: 3831988211228176154
+          subject: Quis qui alias.
+          updatedAt: Aliquid id itaque quo dolores sit.
+        - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+          createdAt: Suscipit labore est laborum a.
+          id: Magni eos repudiandae incidunt molestiae.
+          name: Est sit amet architecto rerum.
+          score: 3831988211228176154
+          subject: Quis qui alias.
+          updatedAt: Aliquid id itaque quo dolores sit.
+        - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+          createdAt: Suscipit labore est laborum a.
+          id: Magni eos repudiandae incidunt molestiae.
+          name: Est sit amet architecto rerum.
+          score: 3831988211228176154
+          subject: Quis qui alias.
+          updatedAt: Aliquid id itaque quo dolores sit.
+        - class: Est quos tempore temporibus consequuntur aliquid quaerat.
+          createdAt: Suscipit labore est laborum a.
+          id: Magni eos repudiandae incidunt molestiae.
+          name: Est sit amet architecto rerum.
+          score: 3831988211228176154
+          subject: Quis qui alias.
+          updatedAt: Aliquid id itaque quo dolores sit.
+        errcode: 0
+        errmsg: ""
+        nextCursor: 1675811036763291576
+        total: 8438660579676085681
+      required:
+      - errcode
+      - errmsg
+    Successresult:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: success
+          example: true
+      description: 成功信息
+      example:
+        ok: true
+      required:
+      - ok
+    UploadResponseBody:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Successresult'
+        errcode:
+          type: integer
+          description: 错误码
+          example: 0
+          minimum: 0
+          maximum: 999999
+        errmsg:
+          type: string
+          description: 错误消息
+          example: ""
+      example:
+        data:
+          ok: true
+        errcode: 0
+        errmsg: ""
+      required:
+      - errcode
+      - errmsg
+tags:
+- name: Score
+  description: 成绩系统
